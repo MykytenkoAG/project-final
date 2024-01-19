@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Configuration;
                 title = "REST API documentation",
                 version = "1.0",
                 description = """
-                        <a href='http://localhost/'>JavaRush Jira application</a><br>
+                        <a href='http://nginx/'>JavaRush Jira application</a><br>
                         <p><b>Тестовые креденшелы:</b><br>
                         - user@gmail.com / password<br>
                         - admin@gmail.com / admin<br>

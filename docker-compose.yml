@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+
+  postgresql:
+    container_name: postgresql
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./src/main/resources/db/changelog.sql:/docker-entrypoint-initdb.d/1.sql
+      - ./src/main/resources/data4dev/data.sql:/docker-entrypoint-initdb.d/2.sql
+    networks:
+      - app-network
+
+  nginx:
+    container_name: nginx
+    image: nginx
+    ports:
+      - "80:80"
+    restart: always
+    volumes:
+      - ./config/:/etc/nginx/conf.d
+      - ./resources/:/opt/jirarush/resources
+    depends_on:
+      - postgresql
+    networks:
+      - app-network
+
+  app:
+    container_name: spring-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    restart: always
+    environment:
+      - "DB_HOST=postgresql"
+      - "POSTGRES_USER=${POSTGRES_USER}"
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+      - "SERVER_PORT=8080"
+      - "SPRING_PROFILES_ACTIVE=prod"
+    depends_on:
+      - postgresql
+      - nginx
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
