@@ -7,6 +7,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
 @Configuration
@@ -35,7 +36,7 @@ public class ThymeleafConfig {
             setTemplateMode(TemplateMode.HTML);
             setCacheable(true);
             setCacheTTLMs(appProperties.getTemplatesUpdateCache().toMillis());
-            setCharacterEncoding("UTF-8");
+            setCharacterEncoding(StandardCharsets.UTF_8.toString());
         }};
     }
 }
