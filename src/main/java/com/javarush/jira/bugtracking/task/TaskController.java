@@ -156,17 +156,17 @@ public class TaskController {
     @GetMapping("/time-in-progress/{id}")
     public Duration getTimeInProgress(@PathVariable long id) {
         log.info("get time in progress for task by id={}", id);
-        LocalDateTime timeReadyForReview = handler.getRepository().getUpdatedTime(id,"ready_for_review");
-        LocalDateTime timeInProgress = handler.getRepository().getUpdatedTime(id,"in_progress");
-        return Duration.between(timeReadyForReview,timeInProgress);
+        LocalDateTime timeInProgress = taskService.getUpdatedTime(id,"in_progress");
+        LocalDateTime timeReadyForReview = taskService.getUpdatedTime(id,"ready_for_review");
+        return Duration.between(timeInProgress, timeReadyForReview);
     }
 
     @GetMapping("/time-in-testing/{id}")
     public Duration getTimeInTesting(@PathVariable long id) {
         log.info("get time in testing for task by id={}", id);
-        LocalDateTime timeDone = handler.getRepository().getUpdatedTime(id,"done");
-        LocalDateTime timeReadyForReview = handler.getRepository().getUpdatedTime(id,"ready_for_review");
-        return Duration.between(timeDone,timeReadyForReview);
+        LocalDateTime timeReadyForReview = taskService.getUpdatedTime(id,"ready_for_review");
+        LocalDateTime timeDone = taskService.getUpdatedTime(id,"done");
+        return Duration.between(timeReadyForReview, timeDone);
     }
 
     private record TaskTreeNode(TaskTo taskTo, List<TaskTreeNode> subNodes) implements ITreeNode<TaskTo, TaskTreeNode> {
