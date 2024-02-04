@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 
 services:
 
@@ -12,8 +12,48 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - ./src/main/resources/db/changelog.sql:/docker-entrypoint-initdb.d/1.sql
+      - ./src/main/resources/db/changelog-for-docker.sql:/docker-entrypoint-initdb.d/1.sql
       - ./src/main/resources/data4dev/data.sql:/docker-entrypoint-initdb.d/2.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U jira -d jira" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - app-network
+
+  postgresql-test:
+    container_name: postgresql-test
+    image: postgres
+    ports:
+      - "5433:5432"
+    restart: always
+    environment:
+      POSTGRES_DB: "jira-test"
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./src/main/resources/db/changelog-for-docker.sql:/docker-entrypoint-initdb.d/1.sql
+      - ./src/test/resources/data.sql:/docker-entrypoint-initdb.d/2.sql
+    networks:
+      - app-network
+
+  pgadmin:
+    container_name: pgadmin-container
+    image: dpage/pgadmin4:7.2
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "password"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 100M
     networks:
       - app-network
 
@@ -27,7 +67,8 @@ services:
       - ./config/:/etc/nginx/conf.d
       - ./resources/:/opt/jirarush/resources
     depends_on:
-      - postgresql
+      postgresql:
+        condition: service_healthy
     networks:
       - app-network
 
