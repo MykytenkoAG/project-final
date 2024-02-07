@@ -6,6 +6,7 @@ import com.javarush.jira.bugtracking.task.to.TaskToFull;
 import com.javarush.jira.common.util.Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,24 +25,25 @@ public class TaskTagController {
     private final TaskTagService taskTagService;
 
     //  get tasks by tag names
-    @GetMapping("/tagnames")
-    public List<Task> getTasksForTagNames(@RequestParam List<String> tags) {
+    @GetMapping("/tasks")
+    public List<Long> getTasksForTagNames(@RequestParam List<String> tags) {
         log.info("get tasks by tagnames={}", tags);
         return taskTagService.getAllTasksForTagNames(tags);
     }
 
     //  get tag names by task
-    @GetMapping("/{id}")
-    public List<TaskTag> getTagNamesByTask(@PathVariable long id) {
-        log.info("get all tags for task {}", id);
-        return taskTagService.getAllTagsForTask(id);
+    @GetMapping("/{taskId}")
+    public List<String> getTagNamesByTask(@PathVariable long taskId) {
+        log.info("get all tags for task {}", taskId);
+        return taskTagService.getAllTagsForTask(taskId);
     }
 
     //  update tags for task
-    @GetMapping("/update")
-    public void updateTagsForTask(@RequestParam long id, @RequestParam List<String> tags) {
-        log.info("update tags for task={}", id);
-        taskTagService.updateTagsForTask(id, tags);
+    @PatchMapping("/{taskId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateTagsForTask(@PathVariable long taskId, @RequestBody List<String> tags) {
+        log.info("update tags for task={}", taskId);
+        taskTagService.updateTagsForTask(taskId, tags);
     }
 
 }
