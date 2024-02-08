@@ -39,7 +39,4 @@ public interface TaskRepository extends BaseRepository<Task> {
             """, nativeQuery = true)
     void setTaskAndSubTasksSprint(long taskId, Long sprintId);
 
-    @Query("SELECT a FROM Activity a WHERE a.taskId=:taskId AND a.statusCode=:statusCode")
-    List<Activity> getUpdatedTime(long taskId, String statusCode);
-
 }
