@@ -17,18 +17,18 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 @Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
-        private final JwtTokenUtils jwtTokenUtils;
+    private final JwtTokenUtils jwtTokenUtils;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
         String username = null;
         String jwt = null;
-        System.out.println("Auth header: "+authHeader);
+        System.out.println("Auth header: " + authHeader);
         if ((authHeader != null && authHeader.startsWith("Bearer ")) || authHeader == null) {
             try {
                 jwt = authHeader.substring(7);
@@ -37,7 +37,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 log.debug("Token lifetime is over");
             } catch (SignatureException e) {
                 log.debug("Incorrect signature");
-            } catch (Exception e){
+            } catch (Exception e) {
                 SecurityContextHolder.clearContext();
                 log.debug("Logout by filter");
             }

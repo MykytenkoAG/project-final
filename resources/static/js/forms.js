@@ -18,7 +18,8 @@ function sendData(form, method, url, jwt_token) {
 let forms = document.getElementsByTagName('form');
 
 for(let i = 0; i < forms.length; i++) {
-    // console.log(forms[i]);
+    console.log(forms[i]);
+    console.log(jwt_token);
     forms[i].addEventListener('submit', function(event){
         // console.log('Form submit event detected.');
         const action = this.getAttribute("action");
@@ -26,6 +27,6 @@ for(let i = 0; i < forms.length; i++) {
             return;
         }
         event.preventDefault();
-        sendData(this, "POST", action, "myJWTToken");
+        sendData(this, "POST", action, jwt_token);
     }, false);
 }
