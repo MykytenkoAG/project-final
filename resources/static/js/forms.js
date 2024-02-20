@@ -27,6 +27,7 @@ for(let i = 0; i < forms.length; i++) {
             return;
         }
         event.preventDefault();
-        sendData(this, "POST", action, jwt_token);
+        // sendData(this, "POST", action, jwt_token);
+        sendData(this, "POST", action, "jwt_token");
     }, false);
 }

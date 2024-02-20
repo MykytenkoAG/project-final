@@ -17,7 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-//@Component
+@Component
 @RequiredArgsConstructor
 @Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -29,7 +29,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String jwt = null;
         System.out.println("Auth header: " + authHeader);
-        if ((authHeader != null && authHeader.startsWith("Bearer ")) || authHeader == null) {
+        System.out.println("Request method: " + request.getMethod());
+        if (request.getMethod().equals("POST") && ((authHeader != null && authHeader.startsWith("Bearer ")) || authHeader == null)) {
             try {
                 jwt = authHeader.substring(7);
                 username = jwtTokenUtils.getUsername(jwt);
@@ -38,8 +39,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (SignatureException e) {
                 log.debug("Incorrect signature");
             } catch (Exception e) {
-                SecurityContextHolder.clearContext();
                 log.debug("Logout by filter");
+                System.out.println("username: " + username + "; authentication: " + SecurityContextHolder.getContext().getAuthentication());
+                SecurityContextHolder.clearContext();
+                request.getSession().invalidate();
             }
         }
         System.out.println("username: " + username + "; authentication: " + SecurityContextHolder.getContext().getAuthentication());
