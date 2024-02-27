@@ -15,11 +15,14 @@ import com.javarush.jira.common.util.Util;
 import com.javarush.jira.login.AuthUser;
 import com.javarush.jira.ref.RefType;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.javarush.jira.bugtracking.ObjectType.TASK;
@@ -39,6 +42,7 @@ public class TaskService {
     private final SprintRepository sprintRepository;
     private final TaskExtMapper extMapper;
     private final UserBelongRepository userBelongRepository;
+    private final TaskRepository taskRepository;
 
     @Transactional
     public void changeStatus(long taskId, String statusCode) {
@@ -140,4 +144,24 @@ public class TaskService {
             throw new DataConflictException(String.format(assign ? CANNOT_ASSIGN : CANNOT_UN_ASSIGN, userType, task.getStatusCode()));
         }
     }
+
+    private LocalDateTime getUpdatedTime(long taskId, String statusCode){
+        handler.getRepository().getExisted(taskId);
+        List<Activity> activities = activityHandler.getRepository().findAllByTaskIdOrderByUpdatedDesc(taskId);
+        for (Activity activity:
+             activities) {
+            if(activity.getStatusCode()!=null && activity.getStatusCode().equals(statusCode)){
+                return activity.getUpdated();
+            }
+        }
+        throw new DataConflictException(String.format("Updated time with status '%s' is not set", statusCode));
+    }
+
+    public String calculateTimeForTask(long taskId, String statusCodeBegin, String statusCodeEnd){
+        LocalDateTime timeBegin = getUpdatedTime(taskId,statusCodeBegin);
+        LocalDateTime timeEnd = getUpdatedTime(taskId,statusCodeEnd);
+        Duration duration = Duration.between(timeBegin, timeEnd);
+        return DurationFormatUtils.formatDuration(duration.toMillis(), "H:mm:ss", true);
+    }
+
 }

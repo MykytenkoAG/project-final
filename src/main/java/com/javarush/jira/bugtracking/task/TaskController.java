@@ -20,6 +20,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -149,6 +153,18 @@ public class TaskController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable long id) {
         activityService.delete(id);
+    }
+
+    @GetMapping("/time-in-progress/{id}")
+    public String getTimeInProgress(@PathVariable long id) {
+        log.info("get time in progress for task by id={}", id);
+        return taskService.calculateTimeForTask(id, "in_progress", "ready_for_review");
+    }
+
+    @GetMapping("/time-in-testing/{id}")
+    public String getTimeInTesting(@PathVariable long id) {
+        log.info("get time in testing for task by id={}", id);
+        return taskService.calculateTimeForTask(id, "ready_for_review", "done");
     }
 
     private record TaskTreeNode(TaskTo taskTo, List<TaskTreeNode> subNodes) implements ITreeNode<TaskTo, TaskTreeNode> {
