@@ -1,0 +1,115 @@
+version: '3.9'
+
+services:
+
+  postgresql:
+    container_name: postgres-db
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      PGDATA: "${E_PG_DATA}"
+      POSTGRES_DB: "${E_DB}"
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_PASSWORD: "${DB_PWD}"
+    volumes:
+      - "${V_PG_DATA}"
+      - "${V_DB_CHANGELOG}"
+      - "${V_DB_DATA}"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER} -d ${E_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - app-network
+
+  postgres-db-test:
+    container_name: postgres-db-test
+    image: postgres
+    ports:
+      - "5433:5432"
+    restart: always
+    environment:
+      PGDATA: "${E_PG_DATA}"
+      POSTGRES_DB: "${E_DB_TEST}"
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_PASSWORD: "${DB_PWD}"
+    volumes:
+      - "${V_PG_DATA_TEST}"
+      - "${V_DB_CHANGELOG}"
+      - "${V_DB_DATA_TEST}"
+    networks:
+      - app-network
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:8.2
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "password"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 100M
+    networks:
+      - app-network
+
+  nginx:
+    container_name: nginx
+    image: nginx
+    ports:
+      - "80:80"
+    restart: always
+    volumes:
+      - "${V_NGINX_CONF}"
+      - "${V_NGINX_RES}"
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  app:
+    container_name: spring-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    restart: always
+    environment:
+      - "DB_HOST=postgresql"
+      - "POSTGRES_USER=${DB_USER}"
+      - "POSTGRES_PASSWORD=${DB_PWD}"
+      - "SERVER_PORT=8080"
+      - "SPRING_PROFILES_ACTIVE=prod"
+      - "CLIENT_ID_GITHUB=${E_CLIENT_ID_GITHUB}"
+      - "CLIENT_ID_GOOGLE=${E_CLIENT_ID_GOOGLE}"
+      - "CLIENT_ID_VK=${E_CLIENT_ID_VK}"
+      - "CLIENT_ID_YANDEX=${E_CLIENT_ID_YANDEX}"
+      - "CLIENT_ID_GITLAB=${E_CLIENT_ID_GITLAB}"
+      - "MAIL_HOST=${E_MAIL_HOST}"
+      - "MAIL_USERNAME=${E_MAIL_USERNAME}"
+      - "MAIL_PASSWORD=${E_MAIL_PASSWORD}"
+      - "MAIL_PORT=${E_MAIL_PORT}"
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      nginx:
+        condition: service_started
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
