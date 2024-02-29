@@ -39,7 +39,7 @@ services:
       POSTGRES_PASSWORD: "${DB_PWD}"
     volumes:
       - "${V_PG_DATA_TEST}"
-      - "${V_DB_CHANGELOG}"
+      - "${V_DB_CHANGELOG_TEST}"
       - "${V_DB_DATA_TEST}"
     networks:
       - app-network

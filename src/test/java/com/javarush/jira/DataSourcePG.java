@@ -15,7 +15,7 @@ public class DataSourcePG {
     public DataSource getDataSource() {
         return DataSourceBuilder.create()
                 .driverClassName("org.postgresql.Driver")
-                .url("jdbc:postgresql://localhost:5432/jira")
+                .url("jdbc:postgresql://localhost:5433/jira-test")
                 .username("jira")
                 .password("JiraRush")
                 .build();
