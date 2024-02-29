@@ -34,7 +34,7 @@ spring:
 #    changeLog: "classpath:db/changelog.sql"
 
   liquibase:
-      changeLog: "classpath:db/changelog-h2.sql"
+      changeLog: "classpath:db/changelog-test.sql"
 
   # Jackson Fields Serialization
   jackson:
