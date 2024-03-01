@@ -34,7 +34,13 @@
 5. 
 6. Выполнено.
 7. 
-8. Выполнено.
+8. Выполнено. Для получения значения времени необходимо отправить GET-запрос вида
+<br>
+http://localhost:8080/api/tasks/time-in-testing/1
+<br> или <br>
+http://localhost:8080/api/tasks/time-in-progress/1
+<br>
+Результатом запроса будет значение времени выполнения в формате часы:минуты:секунды.
 9. Выполнено.
 10. Выполнено.
 11. Выполнено. Для проверки:
@@ -48,6 +54,7 @@ http://localhost:8080/?lang=ru
 DB_URL=jdbc:postgresql://localhost:5432/jira
 DB_USER=jira
 DB_PWD=JiraRush
+SPRING_URL=http://localhost:8080
 E_PG_DATA=/var/lib/postgresql/data/pgdata
 E_DB=jira
 E_DB_TEST=jira-test
