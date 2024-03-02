@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 //https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-testing-spring-boot-applications
 //@Sql(scripts = {"classpath:db/changelog-test.sql", "classpath:data-pg.sql"}, config = @SqlConfig(encoding = "UTF-8"))
+@Sql(scripts = {"classpath:db/changelog-test.sql", "classpath:data-pg.sql"}, config = @SqlConfig(encoding = "UTF-8"))
 @AutoConfigureMockMvc
 //https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-testing-spring-boot-applications-testing-with-mock-environment
 public abstract class AbstractControllerTest extends BaseTests {
