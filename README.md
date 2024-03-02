@@ -46,9 +46,9 @@ PATCH-запрос по адресу /api/tags/{taskId}
 /api/tags/tasks
 8. Выполнено. Для получения значения времени необходимо отправить GET-запрос вида
 <br>
-http://localhost:8080/api/tasks/time-in-testing/1
+/api/tasks/time-in-testing/{taskId}
 <br> или <br>
-http://localhost:8080/api/tasks/time-in-progress/1
+/api/tasks/time-in-progress/{taskId}
 <br>
 Результатом запроса будет значение времени выполнения в формате часы:минуты:секунды.
 9. Выполнено.
