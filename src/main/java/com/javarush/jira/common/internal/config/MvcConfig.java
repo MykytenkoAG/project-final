@@ -43,6 +43,9 @@ public class MvcConfig implements WebMvcConfigurer {
                 AuthUser authUser = AuthUser.safeGet();
                 if (authUser != null) {
                     model.addAttribute("authUser", authUser);
+                    //  add jwt token to model
+                    String jwtToken = JwtTokenUtils.generateToken(AuthUser.safeGet());
+                    model.addAttribute("jwtToken", jwtToken);
                 }
             }
         }
