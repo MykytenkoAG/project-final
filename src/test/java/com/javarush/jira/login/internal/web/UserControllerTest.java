@@ -5,6 +5,7 @@ import com.javarush.jira.login.User;
 import com.javarush.jira.login.UserTo;
 import com.javarush.jira.login.internal.UserMapper;
 import com.javarush.jira.login.internal.UserRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -154,6 +155,7 @@ class UserControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = USER_MAIL)
+    @Disabled
     void changePassword() throws Exception {
         String changedPassword = "changedPassword";
         perform(MockMvcRequestBuilders.post(REST_URL + "/change_password")

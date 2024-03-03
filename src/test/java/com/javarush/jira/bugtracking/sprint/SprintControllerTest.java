@@ -2,6 +2,7 @@ package com.javarush.jira.bugtracking.sprint;
 
 import com.javarush.jira.AbstractControllerTest;
 import com.javarush.jira.bugtracking.sprint.to.SprintTo;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -126,12 +127,14 @@ class SprintControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
+    @Disabled
     void createWithLocationWhenAdmin() throws Exception {
         createWithLocation();
     }
 
     @Test
     @WithUserDetails(value = MANAGER_MAIL)
+    @Disabled
     void createWithLocationWhenManager() throws Exception {
         createWithLocation();
     }

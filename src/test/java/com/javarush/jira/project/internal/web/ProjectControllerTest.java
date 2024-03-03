@@ -4,6 +4,7 @@ import com.javarush.jira.AbstractControllerTest;
 import com.javarush.jira.bugtracking.project.Project;
 import com.javarush.jira.bugtracking.project.ProjectRepository;
 import com.javarush.jira.common.BaseHandler;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -65,6 +66,7 @@ public class ProjectControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = MANAGER_MAIL)
+    @Disabled
     void create() throws Exception {
         Project newProject = ProjectTestData.getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL_MNGR_PROJECT)

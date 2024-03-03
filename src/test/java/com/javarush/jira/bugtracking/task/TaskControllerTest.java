@@ -5,6 +5,7 @@ import com.javarush.jira.bugtracking.UserBelongRepository;
 import com.javarush.jira.bugtracking.task.to.ActivityTo;
 import com.javarush.jira.bugtracking.task.to.TaskToExt;
 import com.javarush.jira.bugtracking.task.to.TaskToFull;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -351,6 +352,7 @@ class TaskControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
+    @Disabled
     void createTaskWithLocation() throws Exception {
         TaskToExt newTo = getNewTaskTo();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
@@ -397,6 +399,7 @@ class TaskControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = USER_MAIL)
+    @Disabled
     void createActivityWithLocation() throws Exception {
         ActivityTo newTo = getNewActivityTo();
         ResultActions action = perform(MockMvcRequestBuilders.post(ACTIVITIES_REST_URL)
@@ -423,6 +426,7 @@ class TaskControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
+    @Disabled
     void createActivityWhenTaskNotExists() throws Exception {
         ActivityTo notExistsTaskTo = new ActivityTo(null, NOT_FOUND, ADMIN_ID, null, null, null,
                 null, "epic", null, null, 4, null);

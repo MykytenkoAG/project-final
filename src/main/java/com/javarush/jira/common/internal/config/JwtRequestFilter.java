@@ -28,8 +28,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         String username = null;
         String jwt = null;
-        System.out.println("Auth header: " + authHeader);
-        System.out.println("Request method: " + request.getMethod());
         if (request.getMethod().equals("POST") && ((authHeader != null && authHeader.startsWith("Bearer ")) || authHeader == null)) {
             try {
                 jwt = authHeader.substring(7);
@@ -40,12 +38,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 log.debug("Incorrect signature");
             } catch (Exception e) {
                 log.debug("Logout by filter");
-                System.out.println("username: " + username + "; authentication: " + SecurityContextHolder.getContext().getAuthentication());
                 SecurityContextHolder.clearContext();
                 request.getSession().invalidate();
             }
         }
-        System.out.println("username: " + username + "; authentication: " + SecurityContextHolder.getContext().getAuthentication());
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     username,
@@ -54,7 +50,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             );
             SecurityContextHolder.getContext().setAuthentication(token);
         }
-        System.out.println("JWT OK");
         filterChain.doFilter(request, response);
     }
 }
