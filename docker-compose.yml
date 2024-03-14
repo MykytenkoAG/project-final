@@ -48,9 +48,9 @@ services:
     container_name: pgadmin
     image: dpage/pgadmin4:8.2
     environment:
-      PGADMIN_DEFAULT_EMAIL: "admin@gmail.com"
-      PGADMIN_DEFAULT_PASSWORD: "password"
-      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_DEFAULT_EMAIL: "${E_PGADMIN_DEFAULT_EMAIL}"
+      PGADMIN_DEFAULT_PASSWORD: "${E_PGADMIN_DEFAULT_PASSWORD}"
+      PGADMIN_CONFIG_SERVER_MODE: "${E_PGADMIN_CONFIG_SERVER_MODE}"
     ports:
       - "5050:80"
     restart: unless-stopped
