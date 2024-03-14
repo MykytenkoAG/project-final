@@ -97,9 +97,37 @@ SPRING_PROFILES_ACTIVE=prod
 ```
 ***При тестировании вместо "prod" следует выбрать профиль "pg"***:
 ```
+DB_URL=jdbc:postgresql://localhost:5432/jira
+DB_USER=jira
+DB_PWD=JiraRush
+SPRING_URL=http://localhost:8080
+E_PG_DATA=/var/lib/postgresql/data/pgdata
+E_DB=jira
+E_DB_TEST=jira-test
+E_CLIENT_ID_GITHUB=3d0d8738e65881fff266
+E_CLIENT_ID_GOOGLE=329113642700-f8if6pu68j2repq3ef6umd5jgiliup60.apps.googleusercontent.com
+E_CLIENT_ID_GITLAB=b8520a3266089063c0d8261cce36971defa513f5ffd9f9b7a3d16728fc83a494
+E_MAIL_HOST=smtp.gmail.com
+E_MAIL_USERNAME=jira4jr@gmail.com
+E_MAIL_PASSWORD=zdfzsrqvgimldzyj
+E_MAIL_PORT=587
 SPRING_PROFILES_ACTIVE=pg
 ```
 ***Или "h2"***:
 ```
+DB_URL=jdbc:postgresql://localhost:5432/jira
+DB_USER=jira
+DB_PWD=JiraRush
+SPRING_URL=http://localhost:8080
+E_PG_DATA=/var/lib/postgresql/data/pgdata
+E_DB=jira
+E_DB_TEST=jira-test
+E_CLIENT_ID_GITHUB=3d0d8738e65881fff266
+E_CLIENT_ID_GOOGLE=329113642700-f8if6pu68j2repq3ef6umd5jgiliup60.apps.googleusercontent.com
+E_CLIENT_ID_GITLAB=b8520a3266089063c0d8261cce36971defa513f5ffd9f9b7a3d16728fc83a494
+E_MAIL_HOST=smtp.gmail.com
+E_MAIL_USERNAME=jira4jr@gmail.com
+E_MAIL_PASSWORD=zdfzsrqvgimldzyj
+E_MAIL_PORT=587
 SPRING_PROFILES_ACTIVE=h2
 ```
